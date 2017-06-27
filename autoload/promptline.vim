@@ -40,11 +40,17 @@ fun! s:validate_file(overwrite, file)
 endfun
 
 fun! s:bg(color)
-  return printf('"${wrap}%d;5;%d${end_wrap}"', s:SHELL_BG_CODE, a:color)
+  let r = str2nr(a:color[1:2], 16)
+  let g = str2nr(a:color[3:4], 16)
+  let b = str2nr(a:color[5:6], 16)
+  return printf('"${wrap}%d;2;%d;%d;%d${end_wrap}"', s:SHELL_BG_CODE, r, g, b)
 endfun
 
 fun! s:fg(color)
-  return printf('"${wrap}%d;5;%d${end_wrap}"', s:SHELL_FG_CODE, a:color)
+  let r = str2nr(a:color[1:2], 16)
+  let g = str2nr(a:color[3:4], 16)
+  let b = str2nr(a:color[5:6], 16)
+  return printf('"${wrap}%d;2;%d;%d;%d${end_wrap}"', s:SHELL_FG_CODE, r, g, b)
 endfun
 
 fun! promptline#create_snapshot(file, theme, preset) abort

@@ -25,13 +25,13 @@ endfun
 
 fun! promptline#themes#create_theme_from_airline(mode_palette)
   return {
-        \'a'    : a:mode_palette.airline_a[2:4],
-        \'b'    : a:mode_palette.airline_b[2:4],
-        \'c'    : a:mode_palette.airline_c[2:4],
-        \'x'    : a:mode_palette.airline_x[2:4],
-        \'y'    : a:mode_palette.airline_y[2:4],
-        \'z'    : a:mode_palette.airline_z[2:4],
-        \'warn' : a:mode_palette.airline_warning[2:4]}
+        \'a'    : a:mode_palette.airline_a,
+        \'b'    : a:mode_palette.airline_b,
+        \'c'    : a:mode_palette.airline_c,
+        \'x'    : a:mode_palette.airline_x,
+        \'y'    : a:mode_palette.airline_y,
+        \'z'    : a:mode_palette.airline_z,
+        \'warn' : a:mode_palette.airline_warning}
 endfun
 
 fun! promptline#themes#load_stock_theme(theme_name) abort
@@ -56,13 +56,13 @@ endfun
 
 fun! promptline#themes#create_theme_from_lightline(mode_palette)
   return {
-        \'a'    : a:mode_palette.left[0][2:4],
-        \'b'    : a:mode_palette.left[1][2:4],
-        \'c'    : a:mode_palette.middle[0][2:4],
-        \'x'    : a:mode_palette.middle[0][2:4],
-        \'y'    : a:mode_palette.right[1][2:4],
-        \'z'    : a:mode_palette.right[0][2:4],
-        \'warn'  : a:mode_palette.warning[0][2:4]}
+        \'a'    : a:mode_palette.left[0],
+        \'b'    : a:mode_palette.left[1],
+        \'c'    : a:mode_palette.middle[0],
+        \'x'    : a:mode_palette.middle[0],
+        \'y'    : a:mode_palette.right[1],
+        \'z'    : a:mode_palette.right[0],
+        \'warn'  : a:mode_palette.warning[0]}
 endfun
 
 fun! promptline#themes#get_theme_from_vim()
