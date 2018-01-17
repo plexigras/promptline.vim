@@ -39,18 +39,26 @@ fun! s:validate_file(overwrite, file)
   return file
 endfun
 
-fun! s:bg(color)
-  let r = str2nr(a:color[1:2], 16)
-  let g = str2nr(a:color[3:4], 16)
-  let b = str2nr(a:color[5:6], 16)
-  return printf('"${wrap}%d;2;%d;%d;%d${end_wrap}"', s:SHELL_BG_CODE, r, g, b)
+fun! s:bg(color, termguicolors)
+  if a:termguicolors == 0
+    return printf('"${wrap}%d;5;%d${end_wrap}"', s:SHELL_BG_CODE, a:color)
+  else
+    let r = str2nr(a:color[1:2], 16)
+    let g = str2nr(a:color[3:4], 16)
+    let b = str2nr(a:color[5:6], 16)
+    return printf('"${wrap}%d;2;%d;%d;%d${end_wrap}"', s:SHELL_BG_CODE, r, g, b)
+  endif
 endfun
 
-fun! s:fg(color)
-  let r = str2nr(a:color[1:2], 16)
-  let g = str2nr(a:color[3:4], 16)
-  let b = str2nr(a:color[5:6], 16)
-  return printf('"${wrap}%d;2;%d;%d;%d${end_wrap}"', s:SHELL_FG_CODE, r, g, b)
+fun! s:fg(color, termguicolors)
+  if a:termguicolors == 0
+    return printf('"${wrap}%d;5;%d${end_wrap}"', s:SHELL_FG_CODE, a:color)
+  else
+    let r = str2nr(a:color[1:2], 16)
+    let g = str2nr(a:color[3:4], 16)
+    let b = str2nr(a:color[5:6], 16)
+    return printf('"${wrap}%d;2;%d;%d;%d${end_wrap}"', s:SHELL_FG_CODE, r, g, b)
+  endif
 endfun
 
 fun! promptline#create_snapshot(file, theme, preset) abort
@@ -122,6 +130,7 @@ endfun
 
 fun! s:get_color_variables( theme, preset )
   let color_variables = []
+  let termguicolors = get(g:, 'promptline#termguicolors', &termguicolors)
 
   for section_name in sort(keys(a:preset))
     if section_name ==# 'options'
@@ -132,10 +141,14 @@ fun! s:get_color_variables( theme, preset )
       throw "promptline: theme doesn't define colors for '". section_name . "' section"
     endif
 
-    let [fg, bg] = a:theme[section_name][s:FG : s:BG]
-    let color_variables += [ '  local ' .section_name. '_fg=' . s:fg(fg) ]
-    let color_variables += [ '  local ' .section_name. '_bg=' . s:bg(bg) ]
-    let color_variables += [ '  local ' .section_name. '_sep_fg=' . s:fg(bg) ]
+    if termguicolors == 0
+      let [fg, bg] = a:theme[section_name][2:4][s:FG : s:BG]
+    else
+      let [fg, bg] = a:theme[section_name][s:FG : s:BG]
+    endif
+    let color_variables += [ '  local ' .section_name. '_fg=' . s:fg(fg, termguicolors) ]
+    let color_variables += [ '  local ' .section_name. '_bg=' . s:bg(bg, termguicolors) ]
+    let color_variables += [ '  local ' .section_name. '_sep_fg=' . s:fg(bg, termguicolors) ]
   endfor
   return color_variables
 endfun
